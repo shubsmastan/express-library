@@ -1,4 +1,4 @@
-const BookInstance = require("../models/bookinstance");
+const BookInstance = require("../models/bookinstance_");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const Book = require("../models/book");
