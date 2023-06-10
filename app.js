@@ -1,3 +1,4 @@
+require("dotenv").config({ path: __dirname + "/.env" });
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -5,13 +6,14 @@ const compression = require("compression");
 const createError = require("http-errors");
 const path = require("path");
 const helmet = require("helmet");
-const MONGODB_CREDENTIALS = require("./keys/MONGODB");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const catalogRouter = require("./routes/catalog");
 
 const app = express();
+
+console.log(process.env.MONGODB_URI);
 
 const RateLimit = require("express-rate-limit");
 const limiter = RateLimit({
@@ -30,11 +32,11 @@ app.use(
 
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
-const dev_db_url = `mongodb+srv://${MONGODB_CREDENTIALS}@cluster0.pgsx2nl.mongodb.net/express_library?retryWrites=true&w=majority`;
+// const dev_db_url = `mongodb+srv://${MONGODB_CREDENTIALS}@cluster0.pgsx2nl.mongodb.net/express_library?retryWrites=true&w=majority`;
 
 (async function () {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || dev_db_url);
+    await mongoose.connect(process.env.MONGODB_URI);
   } catch (error) {
     console.log(error);
   }
