@@ -6,8 +6,8 @@ const { body, validationResult } = require("express-validator");
 
 const asyncHandler = require("express-async-handler");
 
+// Get details of books, book instances, authors and genre counts (in parallel)
 exports.index = asyncHandler(async (req, res, next) => {
-  // Get details of books, book instances, authors and genre counts (in parallel)
   const [
     numBooks,
     numBookInstances,
@@ -23,7 +23,7 @@ exports.index = asyncHandler(async (req, res, next) => {
   ]);
   console.log(numBooks);
   res.render("index", {
-    title: "Local Library Home",
+    title: "Express Library Home",
     book_count: numBooks,
     book_instance_count: numBookInstances,
     book_instance_available_count: numAvailableBookInstances,
@@ -32,7 +32,7 @@ exports.index = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Display list of all books.
+// Display all books
 exports.book_list = asyncHandler(async (req, res, next) => {
   const allBooks = await Book.find({}, "title author")
     .sort({ title: 1 })
@@ -42,7 +42,7 @@ exports.book_list = asyncHandler(async (req, res, next) => {
   res.render("book_list", { title: "Book List", book_list: allBooks });
 });
 
-// Display detail page for a specific book.
+// Display details for specific book
 exports.book_detail = asyncHandler(async (req, res, next) => {
   // Get details of books, book instances for specific book
   const [book, bookInstances] = await Promise.all([
@@ -51,7 +51,6 @@ exports.book_detail = asyncHandler(async (req, res, next) => {
   ]);
 
   if (book === null) {
-    // No results.
     const err = new Error("Book not found");
     err.status = 404;
     return next(err);
@@ -64,7 +63,7 @@ exports.book_detail = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Display book create form on GET.
+// Display book create form on GET
 exports.book_create_get = asyncHandler(async (req, res, next) => {
   const [allAuthors, allGenres] = await Promise.all([
     Author.find().exec(),
@@ -78,7 +77,7 @@ exports.book_create_get = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Handle book create on POST.
+// Handle book create on POST
 exports.book_create_post = [
   (req, res, next) => {
     if (!(req.body.genre instanceof Array)) {
@@ -139,7 +138,7 @@ exports.book_create_post = [
   }),
 ];
 
-// Display book delete form on GET.
+// Display book delete form on GET
 exports.book_delete_get = asyncHandler(async (req, res, next) => {
   const [book, allBookInstances] = await Promise.all([
     Book.findById(req.params.id).exec(),
@@ -157,7 +156,7 @@ exports.book_delete_get = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Handle book delete on POST.
+// Handle book delete on POST
 exports.book_delete_post = asyncHandler(async (req, res, next) => {
   const [book, allBookInstances] = await Promise.all([
     Book.findById(req.params.id).exec(),
@@ -176,7 +175,7 @@ exports.book_delete_post = asyncHandler(async (req, res, next) => {
   res.redirect("/catalog/books");
 });
 
-// Display book update form on GET.
+// Display book update form on GET
 exports.book_update_get = asyncHandler(async (req, res, next) => {
   const [book, allAuthors, allGenres] = await Promise.all([
     Book.findById(req.params.id).populate("author").populate("genre").exec(),
@@ -206,7 +205,7 @@ exports.book_update_get = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Handle book update on POST.
+// Handle book update on POST
 exports.book_update_post = [
   (req, res, next) => {
     if (!(req.body.genre instanceof Array)) {

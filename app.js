@@ -16,10 +16,13 @@ mongoose.set("strictQuery", false);
 const mongoDB =
   "mongodb+srv://admin:snSNUVJ9yH3F@cluster0.pgsx2nl.mongodb.net/express_library?retryWrites=true&w=majority";
 
-main().catch((err) => console.log(err));
-async function main() {
-  await mongoose.connect(mongoDB);
-}
+(async function () {
+  try {
+    await mongoose.connect(mongoDB);
+  } catch (error) {
+    console.log(error);
+  }
+})();
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

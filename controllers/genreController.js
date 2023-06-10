@@ -103,7 +103,7 @@ exports.genre_delete_post = asyncHandler(async (req, res, next) => {
   res.redirect("/catalog/genres");
 });
 
-// Display Genre update form on GET.
+// Display Genre update form on GET
 exports.genre_update_get = asyncHandler(async (req, res, next) => {
   const genre = await Genre.findById(req.params.id).exec();
 
@@ -119,7 +119,7 @@ exports.genre_update_get = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Handle Genre update on POST.
+// Handle genre update on POST
 exports.genre_update_post = [
   body("name", "Please enter at least 3 characters.")
     .trim()
@@ -145,7 +145,7 @@ exports.genre_update_post = [
       res.redirect(genreExists.url);
       return;
     }
-    const newgenre = await Genre.findByIdAndUpdate(req.params.id, genre, {});
+    await Genre.findByIdAndUpdate(req.params.id, genre, {});
     res.redirect(genre.url);
   }),
 ];

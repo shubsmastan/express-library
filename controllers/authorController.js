@@ -3,7 +3,7 @@ const Book = require("../models/book");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 
-// Display list of all Authors.
+// Display all authors
 exports.author_list = asyncHandler(async (req, res, next) => {
   const allAuthors = await Author.find().sort({ family_name: 1 }).exec();
   res.render("author_list", {
@@ -12,16 +12,14 @@ exports.author_list = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Display detail page for a specific Author.
+// Display details specific author
 exports.author_detail = asyncHandler(async (req, res, next) => {
-  // Get details of author and all their books (in parallel)
   const [author, allBooksByAuthor] = await Promise.all([
     Author.findById(req.params.id).exec(),
     Book.find({ author: req.params.id }, "title summary").exec(),
   ]);
 
   if (author === null) {
-    // No results.
     const err = new Error("Author not found");
     err.status = 404;
     return next(err);
@@ -34,12 +32,12 @@ exports.author_detail = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Display Author create form on GET.
+// Display author create form on GET
 exports.author_create_get = (req, res, next) => {
   res.render("author_form", { title: "Create Author" });
 };
 
-// Handle Author create on POST.
+// Handle author create on POST
 exports.author_create_post = [
   body("first_name")
     .trim()
@@ -83,7 +81,7 @@ exports.author_create_post = [
   }),
 ];
 
-// Display Author delete form on GET.
+// Display author delete form on GET
 exports.author_delete_get = asyncHandler(async (req, res, next) => {
   const [author, allBooksByAuthor] = await Promise.all([
     Author.findById(req.params.id).exec(),
@@ -101,7 +99,7 @@ exports.author_delete_get = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Handle Author delete on POST.
+// Handle Author delete on POST
 exports.author_delete_post = asyncHandler(async (req, res, next) => {
   const [author, allBooksByAuthor] = await Promise.all([
     Author.findById(req.params.id).exec(),
@@ -120,7 +118,7 @@ exports.author_delete_post = asyncHandler(async (req, res, next) => {
   res.redirect("/catalog/authors");
 });
 
-// Display author update form on GET.
+// Display author update form on GET
 exports.author_update_get = asyncHandler(async (req, res, next) => {
   const author = await Author.findById(req.params.id).exec();
 
@@ -136,7 +134,7 @@ exports.author_update_get = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Handle author update on POST.
+// Handle author update on POST
 exports.author_update_post = [
   body("first_name")
     .trim()

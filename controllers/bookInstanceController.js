@@ -3,7 +3,7 @@ const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const Book = require("../models/book");
 
-// Display list of all BookInstances.
+// Display list of all book instances
 exports.bookinstance_list = asyncHandler(async (req, res, next) => {
   const allBookInstances = await BookInstance.find().populate("book").exec();
 
@@ -13,7 +13,7 @@ exports.bookinstance_list = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Display detail page for a specific BookInstance.
+// Display details for specific book instance
 exports.bookinstance_detail = asyncHandler(async (req, res, next) => {
   const bookInstance = await BookInstance.findById(req.params.id)
     .populate("book")
@@ -32,7 +32,7 @@ exports.bookinstance_detail = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Display BookInstance create form on GET.
+// Display book instance create form on GET
 exports.bookinstance_create_get = asyncHandler(async (req, res, next) => {
   const allBooks = await Book.find({}, "title").exec();
 
@@ -42,7 +42,7 @@ exports.bookinstance_create_get = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Handle BookInstance create on POST.
+// Handle book instance create on POST
 exports.bookinstance_create_post = [
   body("book", "Book must be specified").trim().isLength({ min: 1 }).escape(),
   body("imprint", "Imprint must be specified")
@@ -82,7 +82,7 @@ exports.bookinstance_create_post = [
   }),
 ];
 
-// Display book instance delete form on GET.
+// Display book instance delete form on GET
 exports.bookinstance_delete_get = asyncHandler(async (req, res, next) => {
   const bookInstance = await BookInstance.findById(req.params.id)
     .populate("book")
@@ -98,13 +98,13 @@ exports.bookinstance_delete_get = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Handle book instance delete on POST.
+// Handle book instance delete on POST
 exports.bookinstance_delete_post = asyncHandler(async (req, res, next) => {
   await BookInstance.findByIdAndRemove(req.body.id);
   res.redirect("/catalog/bookinstances");
 });
 
-// Display BookInstance update form on GET.
+// Display book instance update form on GET
 exports.bookinstance_update_get = asyncHandler(async (req, res, next) => {
   const bookInstance = await BookInstance.findById(req.params.id)
     .populate("book")
@@ -124,7 +124,7 @@ exports.bookinstance_update_get = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Handle bookinstance update on POST.
+// Handle book instance update on POST
 exports.bookinstance_update_post = [
   body("book", "Book must be specified").trim().isLength({ min: 1 }).escape(),
   body("imprint", "Imprint must be specified")
