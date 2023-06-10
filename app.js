@@ -1,8 +1,10 @@
-const createError = require("http-errors");
 const express = require("express");
-const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const compression = require("compression");
+const createError = require("http-errors");
+const path = require("path");
+const helmet = require("helmet");
 const MONGODB_CREDENTIALS = require("./keys/MONGODB");
 
 const indexRouter = require("./routes/index");
@@ -11,7 +13,21 @@ const catalogRouter = require("./routes/catalog");
 
 const app = express();
 
-// set up mongoose connection
+const RateLimit = require("express-rate-limit");
+const limiter = RateLimit({
+  windowMs: 60 * 1000,
+  max: 20,
+});
+app.use(limiter);
+
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
+    },
+  })
+);
+
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 const dev_db_url = `mongodb+srv://${MONGODB_CREDENTIALS}@cluster0.pgsx2nl.mongodb.net/express_library?retryWrites=true&w=majority`;
@@ -32,6 +48,8 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use(compression());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
