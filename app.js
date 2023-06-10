@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const MONGODB_CREDENTIALS = require("./keys/MONGODB");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
@@ -13,12 +14,11 @@ const app = express();
 // set up mongoose connection
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
-const mongoDB =
-  "mongodb+srv://admin:snSNUVJ9yH3F@cluster0.pgsx2nl.mongodb.net/express_library?retryWrites=true&w=majority";
+const dev_db_url = `mongodb+srv://${MONGODB_CREDENTIALS}@cluster0.pgsx2nl.mongodb.net/express_library?retryWrites=true&w=majority`;
 
 (async function () {
   try {
-    await mongoose.connect(mongoDB);
+    await mongoose.connect(process.env.MONGODB_URI || dev_db_url);
   } catch (error) {
     console.log(error);
   }
