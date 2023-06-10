@@ -13,8 +13,6 @@ const catalogRouter = require("./routes/catalog");
 
 const app = express();
 
-console.log(process.env.MONGODB_URI);
-
 const RateLimit = require("express-rate-limit");
 const limiter = RateLimit({
   windowMs: 60 * 1000,
