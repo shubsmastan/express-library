@@ -1,13 +1,12 @@
 # Express Library Records
 
-<!-- [Live preview]().<br/><br/> -->
+[Live preview](https://express-library-73nw.onrender.com/).<br/><br/>
 
-Live preview pending...<br/><br/>
 This is a website for a local library to keep track of their books, created as part of the Node.js frontend pathway on [The Odin Project](https://www.theodinproject.com/).
 
 ## Description
 
-This website was initiaised with express-generator and then connected to MongoDB to keep track of books. Instructions for how to deploy the roots, connect database and handle HTTP requests were on [MDN](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/Tutorial_local_library_website).
+This website was initiaised with Express Generator and then connected to MongoDB to keep track of books in a library. Instructions for how to deploy the routes, connect the database and handle HTTP requests were on [MDN](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/Tutorial_local_library_website).
 
 ## Author
 
